@@ -46,14 +46,17 @@ Este notebook foi desenvolvido com base nas instruções da disciplina (Tema1-Tr
 
 Foram realizadas as seguintes modificações e melhorias técnicas em relação ao código base:
 
-1.  **Foco em Classificação Binária:** O notebook original explorava tanto a classificação categórica (múltiplos níveis de doença) quanto a binária. Conforme as instruções do trabalho, este projeto foi focado estritamente na **classificação binária** (0 vs 1), tratando qualquer diagnóstico de doença como classe "1".
+1. **Foco em Classificação Binária:** O notebook original explorava tanto a classificação categórica (múltiplos níveis de doença) quanto a binária. Conforme as instruções do trabalho, este projeto foi focado estritamente na **classificação binária** (0 vs 1), tratando qualquer diagnóstico de doença como classe "1".
 
 2.  **Remoção de Duplicatas:** Foi identificada e executada a remoção de **723 linhas duplicadas** (o dataset original do Kaggle tinha 1025 linhas), uma etapa de pré-processamento crucial que não estava no notebook original, garantindo a integridade e a validade estatística do modelo (302 amostras restantes).
 
 3.  **Implementação de *Early Stopping*:** Para combater o *overfitting* e otimizar o tempo de treinamento, foi adicionado um *callback* `EarlyStopping` do Keras.
-    * O modelo foi configurado para rodar por até **60 épocas**, monitorando a `val_loss`.
-    * O treinamento foi interrompido automaticamente na **Época 31**, pois a `val_loss` não melhorou por **11 épocas** (paciência).
-    * Crucialmente, a opção `restore_best_weights=True` foi ativada. Isso garante que o modelo final utilizado para avaliação **não é o da última época (Época 31)**, que já apresentava overfitting, mas sim o modelo com os **pesos da Época 20**, que teve o menor `val_loss` (melhor generalização).
+
+    O modelo foi configurado para rodar por até **60 épocas**, monitorando a `val_loss`.
+    
+    O treinamento foi interrompido automaticamente na **Época 31**, pois a `val_loss` não melhorou por **11 épocas** (paciência).
+    
+    Crucialmente, a opção `restore_best_weights=True` foi ativada. Isso garante que o modelo final utilizado para avaliação **não é o da última época (Época 31)**, que já apresentava overfitting, mas sim o modelo com os **pesos da Época 20**, que teve o menor `val_loss` (melhor generalização).
 
 ---
 
