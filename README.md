@@ -46,7 +46,9 @@ Este notebook foi desenvolvido com base nas instruções da disciplina (Tema1-Tr
 Foram realizadas as seguintes modificações e melhorias técnicas em relação ao código base:
 
 1.  **Foco em Classificação Binária:** O notebook original explorava tanto a classificação categórica (múltiplos níveis de doença) quanto a binária. Conforme as instruções do trabalho, este projeto foi focado estritamente na **classificação binária** (0 vs 1), tratando qualquer diagnóstico de doença como classe "1".
+
 2.  **Remoção de Duplicatas:** Foi identificada e executada a remoção de **723 linhas duplicadas** (o dataset original do Kaggle tinha 1025 linhas), uma etapa de pré-processamento crucial que não estava no notebook original, garantindo a integridade e a validade estatística do modelo (302 amostras restantes).
+
 3.  **Implementação de *Early Stopping*:** Para combater o *overfitting* e otimizar o tempo de treinamento, foi adicionado um *callback* `EarlyStopping` do Keras.
     * O modelo foi configurado para rodar por até **60 épocas**, monitorando a `val_loss`.
     * O treinamento foi interrompido automaticamente na **Época 31**, pois a acurácia de validação não melhorou por **11 épocas** (paciência).
@@ -59,16 +61,21 @@ Foram realizadas as seguintes modificações e melhorias técnicas em relação 
 O notebook segue o fluxo padrão de um projeto de *Deep Learning*:
 
 1.  **Carga e Limpeza:** Os dados são carregados via API do Kaggle e limpos (remoção de 723 duplicatas).
+
 2.  **Análise Exploratória (EDA):** Verificação de tipos de dados, balanceamento de classe (**54,3%** vs **45,7%**, bem balanceado) e análise de correlação.
+
 3.  **Pré-processamento:**
     * Divisão dos dados em treino (80% / **241 amostras**) e teste (20% / **61 amostras**).
     * **Normalização (Padronização):** Aplicação do `StandardScaler` *após* a divisão (fit no treino, transform no teste) para evitar *data leakage*. Este passo é essencial devido às diferentes escalas das *features* (ex: `age` vs `chol`).
+    
 4.  **Construção do Modelo (Keras):** A ANN foi construída com:
     * Camada de Entrada (13 neurônios)
     * 2 Camadas Ocultas (16 e 8 neurônios) com ativação **ReLU**.
     * Regularização **Dropout** (0.25) e **L2** para prevenir *overfitting*.
     * Camada de Saída (1 neurônio) com ativação **Sigmoid** para a probabilidade binária.
+    
 5.  **Treinamento:** O modelo foi compilado com *loss* `binary_crossentropy` e otimizador `adam`, e treinado com *Early Stopping*.
+
 6.  **Avaliação:** O desempenho do modelo foi medido no conjunto de teste.
 
 ---
