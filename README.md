@@ -89,6 +89,8 @@ A avaliação do modelo no conjunto de teste (**61 amostras**) revelou um desemp
 
 A matriz de confusão detalha os acertos e erros:
 
+<img width="952" height="803" alt="image" src="https://github.com/user-attachments/assets/855c8f39-030f-4ab2-bdd2-0581d3d838c3" />
+
 * **Verdadeiros Positivos (TP): 28**
     * O modelo acertou 28 pacientes que tinham doença.
 * **Verdadeiros Negativos (TN): 23**
