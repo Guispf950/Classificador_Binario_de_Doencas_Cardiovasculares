@@ -76,8 +76,11 @@ O notebook segue o fluxo padrão de um projeto de *Deep Learning*:
     
 4.  **Construção do Modelo (Keras):** A ANN foi construída com:
     4.1 Camada de Entrada (13 neurônios)
+    
     4.2 2 Camadas Ocultas (16 e 8 neurônios) com ativação **ReLU**.
+    
     4.3 Regularização **Dropout** (0.25) e **L2** para prevenir *overfitting*.
+    
     4.4 Camada de Saída (1 neurônio) com ativação **Sigmoid** para a probabilidade binária.
     
 5.  **Treinamento:** O modelo foi compilado com *loss* `binary_crossentropy` e otimizador `adam`, e treinado com *Early Stopping* (garantindo o uso dos melhores pesos).
