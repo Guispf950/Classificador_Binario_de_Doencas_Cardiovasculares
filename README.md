@@ -1,6 +1,7 @@
 # Projeto 1: Classificação Binária de Doenças Cardíacas com Redes Neurais
 
 **Disciplina:** Fundamentos de Inteligência Artificial (FIA)
+
 **Professor:** Edjard Mota
 
 ## 👥 Equipe
