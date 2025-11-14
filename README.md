@@ -51,8 +51,8 @@ Foram realizadas as seguintes modificações e melhorias técnicas em relação 
 
 3.  **Implementação de *Early Stopping*:** Para combater o *overfitting* e otimizar o tempo de treinamento, foi adicionado um *callback* `EarlyStopping` do Keras.
     * O modelo foi configurado para rodar por até **60 épocas**, monitorando a `val_loss`.
-    * O treinamento foi interrompido automaticamente na **Época 31**, pois a acurácia de validação não melhorou por **11 épocas** (paciência).
-    * Crucialmente, a opção `restore_best_weights=True` foi ativada, garantindo que o modelo final utilizado para avaliação fosse aquele com os pesos da **Época 20**, que apresentou o melhor desempenho de generalização.
+    * O treinamento foi interrompido automaticamente na **Época 31**, pois a `val_loss` não melhorou por **11 épocas** (paciência).
+    * Crucialmente, a opção `restore_best_weights=True` foi ativada. Isso garante que o modelo final utilizado para avaliação **não é o da última época (Época 31)**, que já apresentava overfitting, mas sim o modelo com os **pesos da Época 20**, que teve o menor `val_loss` (melhor generalização).
 
 ---
 
@@ -74,17 +74,21 @@ O notebook segue o fluxo padrão de um projeto de *Deep Learning*:
     * Regularização **Dropout** (0.25) e **L2** para prevenir *overfitting*.
     * Camada de Saída (1 neurônio) com ativação **Sigmoid** para a probabilidade binária.
     
-5.  **Treinamento:** O modelo foi compilado com *loss* `binary_crossentropy` e otimizador `adam`, e treinado com *Early Stopping*.
+5.  **Treinamento:** O modelo foi compilado com *loss* `binary_crossentropy` e otimizador `adam`, e treinado com *Early Stopping* (garantindo o uso dos melhores pesos).
 
-6.  **Avaliação:** O desempenho do modelo foi medido no conjunto de teste.
+6.  **Avaliação:** O desempenho do **modelo final (com os pesos restaurados da melhor época)** foi medido no conjunto de teste.
 
 ---
 
 ## 📊 4. Resultados Obtidos
 
-A avaliação do modelo no conjunto de teste (**61 amostras**) revelou um desempenho robusto e, o mais importante, clinicamente relevante:
+A avaliação do modelo no conjunto de teste (**61 amostras**) revelou um desempenho robusto e, o mais importante, clinicamente relevante.
 
-<img width="1556" height="473" alt="image" src="https://github.com/user-attachments/assets/cb20928a-1c9e-4358-9d7a-8f66a01f061e" />
+Os gráficos abaixo ilustram a eficácia do *Early Stopping*. Note que, embora o treino tenha continuado até a **Época 31** (quando a paciência de 11 épocas se esgotou), a perda de validação (`val_loss`, laranja) claramente atingiu seu ponto mínimo na **Época 20** e começou a subir, indicando overfitting. Graças ao `restore_best_weights=True`, as métricas de avaliação a seguir **referem-se ao modelo ótimo da Época 20**, e não ao modelo degradado da Época 31.
+
+<img width="1616" height="496" alt="image" src="https://github.com/user-attachments/assets/9ad21f30-feb0-4de8-a0e8-764bf28d8ffc" />
+**Obs:** Os pesos considerados para o modelo final foram os da melhor época, que nesse caso foi a **20** e indicada no gráfico como **índice 19**.
+
 
 ### Métricas de Performance
 
@@ -115,6 +119,6 @@ A matriz de confusão detalha os acertos e erros:
 
 O resultado mais importante é o **Recall de 84.85%**. Em um cenário de diagnóstico médico, é muito mais grave cometer um Falso Negativo (não detectar a doença) do que um Falso Positivo.
 
-O modelo demonstrou ser altamente sensível, minimizando o erro mais perigoso (apenas 5 Falsos Negativos). A acurácia final de **83.61%** no conjunto de teste, combinada com a baixa diferença entre as curvas de treino e validação (graças ao *Dropout* e *Early Stopping*), indica que o modelo generaliza bem para dados novos.
+O modelo demonstrou ser altamente sensível, minimizando o erro mais perigoso (apenas 5 Falsos Negativos). A acurácia final de **83.61%** no conjunto de teste, combinada com a baixa diferença entre as curvas de treino e validação (resultado direto do uso de *Dropout* e do *Early Stopping* com `restore_best_weights=True`), indica que o **modelo final (da Época 20)** generaliza bem para dados novos.
 
 A normalização dos dados foi um passo fundamental; sem ela, as *features* com grandes magnitudes (como `chol`) teriam impedido o otimizador `adam` de convergir para uma solução eficaz.
